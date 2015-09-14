@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <style>
+        *{ padding:0; margin:10px;}
+        .A{ position:relative; width:400px; height:400px; border:1px solid #000;}
+        .B{ position:absolute; right:0px; bottom:0px; width:200px; height:50px; }
+        .C{ position:absolute; left:0px; up:0px; width:200px; height:100px;}
+        </style>
+
+</head>
+<>
+<div id = "demo1"></div>
+<h1> list1</h1>
+    <ul id = "demo2">
+        <li>Coffee<sub>1</sub></li>
+        <li>Tea<sub>2</sub></li>
+        <li>Milk<sub>3</sub></li>
+    </ul>
+<h1> list2</h1>
+<ol type="1">
+    <li>Coffee<sub>1</sub></li>
+    <li>Milk<sub>3</sub></li>
+    <li>Tea<sub>2</sub></li>
+</ol>
+<h1>teve</h1>
+<hr width="100%">
+<p>Despite being blocked at almost every turn in pursuit of the sport he loved, Seve Ballesteros fought against adversity to become the most spectacular and ...</p>
+<pre>Taylor Alison Swift (born December 13, 1989) is an American singer-songwriter
+    and actress. Raised in Wyomissing, Pennsylvania, she moved to Nashville, ...</pre>
+<p>Author Herman Melville died saying:<q>God bless Captain Vere!</q></p>
+<p>Alfred Hitchcock :<q>One never knows the ending. One has to die to know exactly what happens after death, although Catholics have their hopes.</q></p>
+<del>This is deleted!</del>
+<ins>This is inserted!</ins>
+<dl>
+    <dt>1</dt><dd>1</dd>
+    <dt>2</dt><dd>2</dd>
+    <dt>3</dt><dd>3</dd>
+    <dt>4</dt><dd>4</dd>
+    <dt>5</dt><dd>5</dd>
+
+    </dl>
+
+<p>The <abbr title="World Health Organization">WHO</abbr> was founded in 1948.</p>
+<abbr title="National Basketball Association">NBA</abbr>
+<acronym title="as soon as possible">ASAP</acronym>
+<acronym title=" Laugh(ing) Out Loud">LOL</acronym>
+
+<br>
+<div div class="A">
+    <div div class="C">
+    <address  style = "float:left;">
+        95125 La Rossa Circle</a>.<br>
+        San Jose, CA, 95125<br>
+        USA<br>
+    </address><br><br><br><br><br><br><br>
+        </div>
+    <div div class="B">
+    <address >
+    95125 La Rossa Circle</a>.<br>
+    San Jose, CA, 95125<br>
+    USA<br>
+</address>
+    </div>
+    <br><br><br>
+
+
+</div>
+
+<script>
+    var res = "<div>";
+    for (i = 1; i < 21; i++) {
+        res = res + "<span>" + i + "<sup>2</sup> = " + (i * i) + "</span><br>";
+    }
+    res = res + "</div>";
+    document.getElementById("demo1").innerHTML = res;
+</script>
+
+</body>
+</html>
