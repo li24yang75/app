@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />	
+	<title>React - Bootstrap Theme</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<!-- stylesheets -->
+	<link rel="stylesheet" type="text/css" href="css/compiled/theme.css">
+
+	<!-- javascript -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="js/bootstrap/bootstrap.min.js"></script>
+	<script src="js/theme.js"></script>
+
+	<!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+	<script src="https://cdn.firebase.com/js/client/2.2.9/firebase.js">
+	</script>
+
+	<script src='https://www.google.com/recaptcha/api.js'></script>
+
+	<style>
+
+		span.form_required {
+			color : #ab1f39;
+			font-weight: bold;
+			font-size : 15px;
+		}
+
+		div#reg_tou_inner {
+			display: none;
+			background-attachment: scroll;
+			background-clip: border-box;
+			background-color:#355069;
+			background-image: none;
+			background-origin: padding-box;
+			background-size: auto;
+			box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 3px 0px;
+			color: rgb(188, 188, 188);
+			font-family: tahoma, helvetica, arial, sans-serif;
+			font-size: 12px;
+			font-style: normal;
+			font-variant: normal;
+			font-weight: normal;
+			height: 305px;
+			line-height: normal;
+			max-height: 750px;
+			overflow-x: hidden;
+			overflow-y: hidden;
+			padding-bottom: 0px;
+			padding-left: 0px;
+			padding-right: 0px;
+			padding-top: 0px;
+			width: 600px;
+			float: none;
+			margin: 20px auto 0 auto;
+		}
+		div.ipsPad {
+			display: block;
+			color: rgb(188, 188, 188);
+			font-family: tahoma, helvetica, arial, sans-serif;
+			font-size: 12px;
+			font-style: normal;
+			font-variant: normal;
+			font-weight: normal;
+			height: 270px;
+			line-height: normal;
+			margin-bottom: 0px;
+			margin-left: 0px;
+			margin-right: 0px;
+			margin-top: 0px;
+			overflow-x: auto;
+			overflow-y: auto;
+			padding-bottom: 9px;
+			padding-left: 9px;
+			padding-right: 9px;
+			padding-top: 9px;
+		}
+	</style>
+
+
+
+	<script>
+		$(document).ready(function(){
+			$("div.submit").click(function(){
+				var pwd1 = $("input#password1").prop('value');
+				var pwd2 = $("input#password2").prop('value');
+				if (pwd1 != pwd2) {
+					alert("The two passwords differ. Please try again.");
+					return;
+				}
+				if (document.getElementById("agree").checked == false) {
+					alert("Please agree the terms of service and click the checkbox.");
+					return;
+				}
+				var ref = new Firebase("https://li24yang75.firebaseio.com");
+				ref.createUser({
+					email    : $("input#email").prop('value'),
+					password : pwd1
+				}, function(error, userData) {
+					if (error) {
+						alert(error + " Please try again.");
+						console.log("Error creating user:", error);
+					} else {
+						alert("Successfully created user account with uid:", userData.uid);
+						console.log("Successfully created user account with uid:", userData.uid);
+					}
+				});
+			});
+		});
+	</script>
+</head>
+<body id="signup">
+	<div class="container">
+
+
+
+
+
+		<div class="row header">
+			<div class="col-md-12">
+				<h3 class = "logo"><strong class="logo"><a href="index6.html" style="max-height: 88px;"><img height="60" width="250" src="images/logos/mynba2k16bot.png" alt="Advanced Free Clash of Clans Bot - Earn Millions in Gold" style="max-height: 88px;">
+				</a></strong></h3>
+				<h4>Set up your new account today.</h4>
+				<!--<p>-->
+					<!--Enjoy our awesome bot right now without any payment !-->
+				<!--</p>-->
+			</div>
+		</div>
+		<div id="reg_tou_inner" class="popupInner" style="width: 600px; max-height: 750px;">
+			<span style = "font-size:17px;"><b>Registration Terms</b></span>
+			<div style = "float: right; margin: auto 10px auto auto">
+
+				<a href="javascript:void(0)" onclick="document.getElementById('reg_tou_inner').style.display='none';"><span class="glyphicon glyphicon-remove"></span>
+				</a>
+
+			</div>
+
+			<div class="ipsPad" id="tou_popup"> By clicking 'Create Account' you agree to everything stated below:<br><br>1)
+				If you are an employee of Supercell Oy or in any way affiliated with them or contracted by them, you are
+				allowed to enter this site given that you agree with these TOS in order to arrange that if any content that
+				is the intellectual property of Supercell Oy is hosted on this server while it should not be, will be
+				removed in accordance to term 6.<br><br>2) You do not currently play Clash of Clans, or any other Supercell
+				Oy game, and are therefore not subject to their TOS or any other agreement with them.<br><br>3) You will not
+				advertise this community to encourage other people to break any possible TOS or any other agreement they
+				might have with Supercell Oy.<br><br>4) All of the information and code on this site is strictly for
+				educational purposes. The main goal is to educate people in regards to programming. All code and programs
+				available on the site are coded by this community and its members and are not the intellectual property of
+				any business or organization.<br><br>5) You acknowledge that you will not use any information or code
+				provided by this community and it's members towards creating and distributing software that could be
+				considered as harmful to any business or organization. By doing so you take full responsibility for these
+				actions and the usage of the knowledge or code you have acquired here.<br><br>6) Any dispute about files
+				that may be the intellectual property of a business or organization hosted on an external server or file
+				sharing site should be taken up with the owner of that server or site. If any of this content is found
+				hosted and made available to people on this server trough attachments or otherwise, a mail can be sent to
+				support@clashbot.org and the files will be removed without incident.<br><br>7) This site does not encourage
+				the usage of any of it's content towards breaking security measures that may have been put in place in the
+				Clash of Clans game or any other Supercell Oy product. If used towards this purpose, full responsibility
+				will fall to the abuser of this content.<br><br>8) This site does not contain any content regarding
+				obtaining forced access to remote servers, cracking user licenses, stealing paid products or any other
+				illegal activities. If any member of this community is found to be doing so, a mail can be sent to
+				support@clashbot.org and the problem will be resolved without incident.<br><br>9) The messages express the
+				views of the author of the message, not necessarily the views of this bulletin board. Any user who feels
+				that a posted message is objectionable is encouraged to contact us immediately by email. We have the ability
+				to remove objectionable messages and we will make every effort to do so, within a reasonable time frame, if
+				we determine that removal is necessary.<br><br>10) You agree, through your use of this service, that you
+				will not use this bulletin board to post any material which is knowingly false and/or defamatory,
+				inaccurate, abusive, vulgar, hateful, harassing, obscene, profane, sexually oriented, threatening, invasive
+				of a person's privacy, or otherwise violation of any law.<br><br>11) You agree not to post any copyrighted
+				material unless the copyright is owned by you or by this bulletin board.<br><br>12) You are older than or
+				currently 18 years of age.<br><br>13) Our websites use cookies to distinguish you from other users of our
+				website. This helps us to provide you with a personalized experience when you browse this site. For detailed
+				information on the cookies we use and the purposes for which we use them see our cookie policy (link at the
+				footer of each page).<br><br>14) Please remember that we are not responsible for any messages posted. We do
+				not vouch for or warrant the accuracy, completeness or usefulness of any message, and are not responsible
+				for the contents of any message.<br><br>Click 'Create Account' if, and only if, you agree to ALL of the
+				above terms.<br>You must have cookies enabled for this to work. To cancel registration, hit the back button
+				on your web browser.
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="wrapper clearfix">
+					<div class="formy">
+						<div class="row">
+							<div class="col-md-12">
+
+
+
+
+
+								<form role="form">
+									<div class="form-group">
+							    		<label for="email">Email address </label><span class = "form_required"> *</span>
+							    		<input type="text" class="form-control" id="email" />
+							  		</div>
+							  		<div class="form-group">
+							    		<label for="password1">Password</label> <span class = "form_required"> *</span>
+							    		<input type="password" class="form-control" id="password1" />
+							  		</div>
+							  		<div class="form-group">
+							    		<label for="password2">Re-enter password</label> <span class = "form_required"> *</span>
+							    		<input type="password" class="form-control" id="password2" />
+							  		</div>
+									    <label for="password2">Security Check</label> <span class = "form_required"> *</span>
+									    <div class="g-recaptcha" data-sitekey="6LdZXA0TAAAAABopC9NMkpujtVUYBprJ0e37QWMq"></div>
+							  		<div class="checkbox" >
+							    		<label>
+							      			<input type="checkbox" id = "agree"> You have read & agree to the
+							      			<a href="javascript:void(0)"
+											   onclick="document.getElementById('reg_tou_inner').style.display='block';">Terms of service</a>.
+							    		</label>
+							  		</div>
+							  		<div class="submit">
+							  			<a href="#" class="button-clear">
+								  			<span>Create my account</span>
+								  		</a>
+							  		</div>
+
+								</form>
+							</div>
+						</div>						
+					</div>
+				</div>
+				<div class="already-account">
+					Already have an account?
+					<a href="signin.html" data-toggle="popover" data-placement="top" data-content="Go to sign in!" data-trigger="manual">Sign in here</a>
+				</div>
+			</div>
+		</div>
+
+
+
+
+	</div>
+
+
+
+
+
+
+
+	<script>
+		var scoresRef = new Firebase("https://dinosaur-facts.firebaseio.com/scores");
+		scoresRef.orderByValue().on("value", function(snapshot) {
+			snapshot.forEach(function(data) {
+				console.log("The " + data.key() + " dinosaur's score is " + data.val());
+			});
+		});
+	</script>
+	<!--<script type="text/javascript">-->
+		<!--$(function () {-->
+			<!--$(".already-account a").popover();-->
+			<!--$(".already-account a").popover('show');-->
+		<!--});-->
+	<!--</script>-->
+</body>
+</html>
