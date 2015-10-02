@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<link rel="stylesheet" href = "http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/css/bootstrap-select.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/js/bootstrap-select.min.js"></script>
+
+
+    <style>
+        button.btn-default {
+            padding:1px 1px 1px 1px;
+        }
+    </style>
+</head>
+<body ng-app="myApp" ng-controller="userCtrl">
+
+<div class="container">
+
+    <h3>Users</h3>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label" >Search:</label>
+        <div class="col-sm-10">
+            <input type="text" ng-model="search" >
+        </div>
+    </div>
+
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Edit</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Sex</th>
+            <th>Age</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="user in selectedUsers ">
+            <td>
+                <button class="btn" ng-click="editUser(user)">
+                    <span class="glyphicon glyphicon-pencil"></span>  Edit
+                </button>
+            </td>
+            <td>{{ user.fName }}</td>
+            <td>{{ user.lName }}</td>
+            <td>{{ user.sex }}</td>
+            <td>{{ user.age }}</td>
+            <td>
+                <button class="btn" ng-click="deleteUser(user)">
+                    <span style = "color: red" class="glyphicon glyphicon-trash"></span>  Delete
+                </button>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
+
+
+
+    <nav style = "margin: auto;width : 300px">
+        <div class="btn-group btn-group-justified">
+            <div class="btn-group" >
+                <button type="button" class="btn btn-default" ng-click="changePage(1)">First</button>
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default" ng-click="changePage(0)">&laquo;</button>
+            </div>
+            <div class="btn-group" ng-repeat = "pageNum in pageNumSet">
+                <button type="button" class="btn btn-default" ng-click="changePage(pageNum)" ng-disabled="pageNum == curPageNum">{{pageNum}}</button>
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default" ng-click="changePage(-1)">&raquo;</button>
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default" ng-click="changePage(-2)">Last</button>
+            </div>
+        </div>
+    </nav>
+
+
+
+
+
+    <hr>
+    <button class="btn btn-success" ng-click="editUser()">
+        <span class="glyphicon glyphicon-user"></span>  Create New User
+    </button>
+    <hr>
+
+    <h3 ng-show="edit">Create New User:</h3>
+    <h3 ng-hide="edit">Edit User:</h3>
+
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">First Name:</label>
+            <div class="col-sm-10">
+                <input type="text" ng-model="fName" ng-disabled="!edit" placeholder="First Name">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Last Name:</label>
+            <div class="col-sm-10">
+                <input type="text" ng-model="lName" ng-disabled="!edit" placeholder="Last Name">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Password:</label>
+            <div class="col-sm-10">
+                <input type="password" ng-model="passw1" placeholder="Password">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Repeat:</label>
+            <div class="col-sm-10">
+                <input type="password" ng-model="passw2" placeholder="Repeat Password">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Sex:</label>
+            <div class="col-sm-10">
+                <label class="radio-inline"><input type="radio" name="optradio" ng-model = "sex" value="Female">Female</label>
+                <label class="radio-inline"><input type="radio" name="optradio" ng-model = "sex" value="Male">Male</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Age:</label>
+            <div class="col-sm-10">
+                <select class="form-control" size="2" ng-model = "age" style = "width: 174px">
+                    <option ng-repeat = "num in nums">{{num}}</option>
+                </select>
+            </div>
+
+        </div>
+    </form>
+
+    <hr>
+    <button class="btn btn-success" ng-disabled="error || incomplete" ng-click="saveChange()">
+        <span class="glyphicon glyphicon-save"></span>  Save Changes
+    </button>
+
+</div>
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('userCtrl', function($scope, $filter) {
+        $scope.nums = [];
+        for (var i = 0; i < 120; i++) {
+            $scope.nums[i] = i + 1;
+        }
+        $scope.fName = '';
+        $scope.lName = '';
+        $scope.passw1 = '';
+        $scope.passw2 = '';
+        $scope.sex = 'Female';
+        $scope.age = 18;
+        $scope.userToEdit = '';
+        $scope.users = [
+            {id:1, fName:'Hege', lName:"Pege", sex: "Male", age: 1 },
+            {id:2, fName:'Kim',  lName:"Pim" , sex: "Female", age: 2},
+            {id:3, fName:'Sal',  lName:"Smith", sex: "Female" , age: 3},
+            {id:4, fName:'Jack', lName:"Jones" , sex: "Female", age: 4},
+            {id:5, fName:'John', lName:"Doe" , sex: "Male", age: 5},
+            {id:6, fName:'John', lName:"Doe" , sex: "Male", age: 6},
+            {id:7, fName:'Peter',lName:"Pan" , sex: "Male", age: 7},
+            {id:6, fName:'John', lName:"Doe" , sex: "Male", age: 8},
+            {id:8, fName:'John', lName:"Doe" , sex: "Male", age: 9},
+            {id:9, fName:'John', lName:"Doe" , sex: "Male", age: 10},
+            {id:10, fName:'John', lName:"Doe" , sex: "Male", age: 11},
+            {id:11, fName:'John', lName:"Doe" , sex: "Male", age: 12},
+            {id:12, fName:'John', lName:"Doe" , sex: "Male", age: 13},
+            {id:13, fName:'John', lName:"Doe" , sex: "Male", age: 14},
+            {id:14, fName:'John', lName:"Doe" , sex: "Male", age: 15},
+            {id:15, fName:'John', lName:"Doe" , sex: "Male", age: 16},
+            {id:16, fName:'John', lName:"Doe" , sex: "Male", age: 17},
+            {id:17, fName:'John', lName:"Doe" , sex: "Male", age: 18},
+            {id:18, fName:'John', lName:"Doe" , sex: "Male", age: 19},
+            {id:19, fName:'John', lName:"Doe" , sex: "Male", age: 20},
+            {id:20, fName:'John', lName:"Doe" , sex: "Male", age: 21},
+            {id:21, fName:'John', lName:"Doe" , sex: "Male", age: 22},
+            {id:22, fName:'John', lName:"Doe" , sex: "Male", age: 23},
+            {id:23, fName:'John', lName:"Doe" , sex: "Male", age: 24},
+
+        ];
+        $scope.uid = $scope.users.length + 1;
+        $scope.edit = true;
+        $scope.error = false;
+        $scope.incomplete = false;
+        $scope.selectedUsers;
+        $scope.curPageNum = 1;
+        $scope.pageNumSet = [];
+        $scope.pageNumMax = 5;
+        $scope.itemNumMax = 5;
+        $scope.search = '';
+        $scope.searchedUsers = [];
+
+
+
+
+
+        $scope.changePage = function(page) {
+            if (page == 0) {
+                if ($scope.curPageNum > 1) {
+                    $scope.curPageNum = $scope.curPageNum - 1;
+                }
+            } else if (page == 1) {
+                $scope.curPageNum = 1;
+            } else if (page == -1) {
+                if ($scope.curPageNum < Math.ceil($scope.searchedUsers.length / $scope.itemNumMax)) {
+                    $scope.curPageNum = $scope.curPageNum + 1;
+                }
+            } else if (page == -2) {
+                $scope.curPageNum = Math.ceil($scope.searchedUsers.length / $scope.itemNumMax);
+            } else {
+                $scope.curPageNum = page;
+            }
+        };
+
+        $scope.editUser = function(user) {
+            if (user == null) {
+                $scope.edit = true;
+                $scope.incomplete = true;
+                $scope.fName = '';
+                $scope.lName = '';
+            } else {
+                $scope.userToEdit = user;
+                $scope.edit = false;
+                $scope.fName = user.fName;
+                $scope.lName = user.lName;
+                $scope.sex = user.sex;
+                $scope.age = user.age;
+            }
+        };
+
+        $scope.deleteUser = function(user) {
+
+            $scope.users.splice($scope.users.indexOf(user), 1);
+        };
+
+        $scope.saveChange = function() {
+            if ($scope.edit == true) {
+                $scope.users.push({id:$scope.uid, fName:$scope.fName, lName:$scope.lName , sex: $scope.sex, age: $scope.age});
+                $scope.uid = $scope.uid + 1;
+                $scope.edit = false;
+            } else {
+                $scope.userToEdit.sex = $scope.sex;
+                $scope.userToEdit.age = $scope.age;
+            }
+            $scope.fName = '';
+            $scope.lName = '';
+            $scope.passw1 = '';
+            $scope.passw2 = '';
+            $scope.sex = 'Female';
+            $scope.age = 18;
+            $scope.edit = true;
+            $scope.error = false;
+            $scope.incomplete = false;
+        };
+
+
+        $scope.$watch('passw1',function() {$scope.test();});
+        $scope.$watch('passw2',function() {$scope.test();});
+        $scope.$watch('fName', function() {$scope.test();});
+        $scope.$watch('lName', function() {$scope.test();});
+        $scope.$watch('curPageNum', function() {$scope.getUser();});
+        $scope.$watch('users.length', function() {$scope.searchUser();});
+        $scope.$watch('search', function() {$scope.searchUser();});
+
+        $scope.getUser = function() {
+
+            $scope.curPageNum = Math.max(Math.min($scope.curPageNum, Math.ceil($scope.searchedUsers.length / $scope.itemNumMax)), 1);
+            $scope.pageNumSet = [];
+            for (var i = Math.max(1, $scope.curPageNum - Math.floor($scope.pageNumMax / 2)); i <= Math.min(Math.ceil($scope.searchedUsers.length / $scope.itemNumMax), $scope.curPageNum + Math.floor($scope.pageNumMax / 2)); i++) {
+                $scope.pageNumSet.push(i);
+            }
+            $scope.selectedUsers = $scope.searchedUsers.slice(($scope.curPageNum - 1) * $scope.itemNumMax, Math.min($scope.searchedUsers.length, $scope.curPageNum * $scope.itemNumMax));
+        };
+
+
+        $scope.searchUser = function() {
+            $scope.searchedUsers = $filter('filter')($scope.users, $scope.search);
+            $scope.getUser();
+        };
+
+
+        $scope.test = function() {
+            if ($scope.passw1 !== $scope.passw2 ) {
+                $scope.error = true;
+            } else {
+                $scope.error = false;
+            }
+            $scope.incomplete = false;
+            if ($scope.edit && (!$scope.fName.length ||
+                    !$scope.lName.length ||
+                    !$scope.passw1.length || !$scope.passw2.length)) {
+                $scope.incomplete = true;
+            }
+        };
+    });
+</script>
+
+</body>
+</html>

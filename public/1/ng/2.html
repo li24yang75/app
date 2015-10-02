@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+        <title></title>
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+</head>
+
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myCtrl', function($scope) {
+        $scope.state = 0;
+        $scope.num1 = "";
+        $scope.num2 = "";
+        $scope.operator = "";
+        $scope.stateMatrix = [
+            [3, 2, -1, 1, -1],
+            [3, 2, -1, -1, -1],
+            [4, -1, -1, -1, -1],
+            [3, 4, 5, -1, -1],
+            [4, -1, 5, -1, -1],
+            [8, 7, -1, 6, -1],
+            [8, 7, -1, -1, -1],
+            [9, -1, -1, -1, -1],
+            [8, 9, -1, -1, 10],
+            [9, -1, -1, -1, 10],
+            [-1, -1, 5, -1, -1],
+        ];
+        $scope.getState = function(val, type) {
+            if (val == 'c') {
+                $scope.state = 0;
+                $scope.num1 = "";
+                $scope.num2 = "";
+                $scope.operator = "";
+            } else if (val == '=') {
+                $scope.num1 = $scope.getResult();
+                $scope.num2 = "";
+                $scope.operator = "";
+                $scope.state = 10;
+            } else {
+                $scope.state = $scope.stateMatrix[$scope.state][type];
+                if ($scope.state == 5) {
+                    $scope.operator = val;
+                } else if ($scope.state < 5) {
+                    $scope.num1 = $scope.num1 + val;
+                } else {
+                    $scope.num2 = $scope.num2 + val;
+                }
+            }
+        };
+        $scope.getResult = function() {
+            var result;
+            if ($scope.operator == '+') {
+                result = parseFloat($scope.num1) + parseFloat($scope.num2);
+            } else if ($scope.operator == '-') {
+                result = parseFloat($scope.num1) - parseFloat($scope.num2);
+            } else if ($scope.operator == '×') {
+                result = parseFloat($scope.num1) * parseFloat($scope.num2);
+            } else if ($scope.operator == '÷') {
+                result = (parseFloat($scope.num1) * 10000) / (parseFloat($scope.num2) * 10000);
+            }
+            return result;
+        }
+    });
+</script>
+
+
+
+<div  class="container" ng-app="myApp" ng-controller="myCtrl">
+    <br>
+    <div class = "col-md-3 col-sm-3"></div>
+    <div class = "col-md-6 col-sm-6" >
+        <div id = "panel" style = "height:195px;border:1px solid rgba(82, 168, 236, 0.8); border-radius:6px; background-color:black">
+            <div class="panel panel-default" style = "margin-bottom: 2px">
+                <div class="panel-body" style = "text-align: right; font-size: 33px; height : 55px; padding: 5px 5px 5px 5px">{{num1 + " " + operator + " " + num2}} </div>
+            </div>
+            <div style = "width : 60%; float:left" >
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" ng-click="getState('7', 0)" ng-disabled="stateMatrix[state][0] == -1">7</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" ng-click="getState('8', 0)" ng-disabled="stateMatrix[state][0] == -1">8</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" ng-click="getState('9', 0)" ng-disabled="stateMatrix[state][0] == -1">9</button>
+                    </div>
+                </div>
+            </div>
+            <div style = "width : 40% ;float:left" >
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" ng-click="getState('-', 3)" ng-disabled="stateMatrix[state][3] == -1">±</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" ng-click="getState('c', 0)" ng-disabled="stateMatrix[state][5] == -1">C</button>
+                    </div>
+                </div>
+            </div>
+            <div style = "width : 60%; float: left" >
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" ng-click="getState('4', 0)" ng-disabled="stateMatrix[state][0] == -1">4</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" ng-click="getState('5', 0)" ng-disabled="stateMatrix[state][0] == -1">5</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" ng-click="getState('6', 0)" ng-disabled="stateMatrix[state][0] == -1">6</button>
+                    </div>
+                </div>
+            </div>
+            <div style = "width : 40% ;float: left" >
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" ng-click="getState('-', 2)" ng-disabled="stateMatrix[state][2] == -1">-</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" ng-click="getState('×', 2)" ng-disabled="stateMatrix[state][2] == -1">×</button>
+                    </div>
+                </div>
+            </div>
+            <div style = "width : 60%; float: left" >
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" ng-click="getState('1', 0)" ng-disabled="stateMatrix[state][0] == -1">1</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" ng-click="getState('2', 0)" ng-disabled="stateMatrix[state][0] == -1">2</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" ng-click="getState('3', 0)" ng-disabled="stateMatrix[state][0] == -1">3</button>
+                    </div>
+                </div>
+            </div>
+            <div style = "width : 40% ;float: left" >
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" ng-click="getState('+', 2)" ng-disabled="stateMatrix[state][2] == -1">+</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" ng-click="getState('÷', 2)" ng-disabled="stateMatrix[state][2] == -1">÷</button>
+                    </div>
+                </div>
+            </div>
+            <div style = "width : 60%; float: left" >
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" ng-click="getState('0', 0)" ng-disabled="stateMatrix[state][0] == -1">0</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" ng-click="getState('00', 0)" ng-disabled="stateMatrix[state][0] == -1">00</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" ng-click="getState('.', 1)" ng-disabled="stateMatrix[state][1] == -1">.</button>
+                    </div>
+                </div>
+            </div>
+            <div style = "width : 40% ;float: left" >
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" ng-click="getState('=', 4)" ng-disabled="stateMatrix[state][4] == -1">=</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
